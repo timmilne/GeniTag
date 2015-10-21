@@ -1,0 +1,2 @@
+#Stop tracking this
+*.xcodeproj/project.xcworkspace/xcuserdata/*.xcuserdatad/UserInterfaceState.xcuserstate
