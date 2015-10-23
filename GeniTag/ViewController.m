@@ -13,7 +13,8 @@
 {    
     NSURL      *_inputFileURL;
     NSURL      *_outputFileURL;
-    int         _num;
+    int         _startSer;
+    int         _numEach;
     EPCEncoder *_encode;
 }
 @end
@@ -30,6 +31,10 @@
     
     // Initiliaze the encoder and converter
     if (_encode == nil) _encode = [EPCEncoder alloc];
+    
+    // Hide the results images
+    [_successImg setHidden:TRUE];
+    [_failImg setHidden:TRUE];
 }
 
 - (void)setRepresentedObject:(id)representedObject {
@@ -49,10 +54,6 @@
     if ([panel runModal] == NSFileHandlingPanelOKButton) {
         for (NSURL *url in [panel URLs]) {
             _inputFileURL = url;
-            
-            // Build an output file based on the intput filename
-            _outputFileURL = [[url URLByDeletingLastPathComponent] URLByAppendingPathComponent:@"GeniTagOutput.csv"];
-            
             [_inputFileFld setStringValue:[_inputFileURL absoluteString]];
             [_generateBtn setEnabled:TRUE];
             [_statusFld setStringValue:@"Ready to encode"];
@@ -69,8 +70,15 @@
     // Make sure there is something to do
     if (_inputFileURL == nil) return;
     
-    _num = (int)[_numberEachFld integerValue];
-    NSLog( @"NumberEach: %d\n", _num);
+    _startSer = (int)[_startingSerialFld integerValue] - 1;
+    NSLog( @"startSer: %d\n", _startSer);
+    
+    _numEach = (int)[_numberEachFld integerValue];
+    NSLog( @"numEach: %d\n", _numEach);
+    
+    // Build an output file based on the intput filename and the range
+    NSString *fileName = [NSString stringWithFormat:@"GeniTagOutput_%d-%d.csv", _startSer, (_startSer+_numEach)];
+    _outputFileURL = [[_inputFileURL URLByDeletingLastPathComponent] URLByAppendingPathComponent:fileName];
     
     [_successImg setHidden:TRUE];
     [_failImg setHidden:TRUE];
@@ -105,8 +113,8 @@
                 // Start with the barcode
                 stringForOutputFile = [stringForOutputFile stringByAppendingString:barcode];
                 
-                for (int i=1; i<=_num; i++){
-                    NSString *ser = [NSString stringWithFormat:@"%d", i];
+                for (int i=1; i<=_numEach; i++){
+                    NSString *ser = [NSString stringWithFormat:@"%d", (_startSer+i)];
                     
                     [_encode withDpt:dpt cls:cls itm:itm ser:ser];
                     hex = [_encode gid_hex];
@@ -124,11 +132,11 @@
                 NSString *gtin = barcode;
                 
                 // Start with the barcode
-                [stringForOutputFile stringByAppendingString:barcode];
+                stringForOutputFile = [stringForOutputFile stringByAppendingString:barcode];
                 
-                for (int i=1; i<=_num; i++){
+                for (int i=1; i<=_numEach; i++){
                     
-                    NSString *ser = [NSString stringWithFormat:@"%d", i];
+                    NSString *ser = [NSString stringWithFormat:@"%d", (_startSer+i)];
                     
                     [_encode withGTIN:gtin ser:ser partBin:@"101"];
                     hex = [_encode sgtin_hex];

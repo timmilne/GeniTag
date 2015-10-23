@@ -11,6 +11,7 @@
 @interface ViewController : NSViewController
 @property (weak) IBOutlet NSTextField *inputFileFld;
 @property (weak) IBOutlet NSTextField *numberEachFld;
+@property (weak) IBOutlet NSTextField *startingSerialFld;
 @property (weak) IBOutlet NSButton *generateBtn;
 @property (weak) IBOutlet NSTextField *statusFld;
 @property (weak) IBOutlet NSImageView *successImg;

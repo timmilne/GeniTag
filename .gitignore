@@ -1,2 +1,5 @@
 #Stop tracking this
 *.xcodeproj/project.xcworkspace/xcuserdata/*.xcuserdatad/UserInterfaceState.xcuserstate
+
+#Ignore everything in the io directory
+/io/
