@@ -70,14 +70,14 @@
     // Make sure there is something to do
     if (_inputFileURL == nil) return;
     
-    _startSer = (int)[_startingSerialFld integerValue] - 1;
+    _startSer = (int)[_startingSerialFld integerValue];
     NSLog( @"startSer: %d\n", _startSer);
     
     _numEach = (int)[_numberEachFld integerValue];
     NSLog( @"numEach: %d\n", _numEach);
     
     // Build an output file based on the intput filename and the range
-    NSString *fileName = [NSString stringWithFormat:@"GeniTagOutput_%d-%d.csv", _startSer, (_startSer+_numEach)];
+    NSString *fileName = [NSString stringWithFormat:@"GeniTagOutput_%d-%d.csv", _startSer, (_startSer+_numEach-1)];
     _outputFileURL = [[_inputFileURL URLByDeletingLastPathComponent] URLByAppendingPathComponent:fileName];
     
     [_successImg setHidden:TRUE];
@@ -113,7 +113,7 @@
                 // Start with the barcode
                 stringForOutputFile = [stringForOutputFile stringByAppendingString:barcode];
                 
-                for (int i=1; i<=_numEach; i++){
+                for (int i=0; i<=_numEach; i++){
                     NSString *ser = [NSString stringWithFormat:@"%d", (_startSer+i)];
                     
                     [_encode withDpt:dpt cls:cls itm:itm ser:ser];
@@ -134,7 +134,7 @@
                 // Start with the barcode
                 stringForOutputFile = [stringForOutputFile stringByAppendingString:barcode];
                 
-                for (int i=1; i<=_numEach; i++){
+                for (int i=0; i<=_numEach; i++){
                     
                     NSString *ser = [NSString stringWithFormat:@"%d", (_startSer+i)];
                     
