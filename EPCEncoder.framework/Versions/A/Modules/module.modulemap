@@ -1,0 +1,6 @@
+framework module EPCEncoder {
+  umbrella header "EPCEncoder.h"
+
+  export *
+  module * { export * }
+}

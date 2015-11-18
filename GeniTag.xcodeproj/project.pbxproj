@@ -13,7 +13,8 @@
 		B702AD461BD556DA00B363D4 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B702AD451BD556DA00B363D4 /* Images.xcassets */; };
 		B702AD491BD556DA00B363D4 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B702AD471BD556DA00B363D4 /* Main.storyboard */; };
 		B702AD551BD556DA00B363D4 /* GeniTagTests.m in Sources */ = {isa = PBXBuildFile; fileRef = B702AD541BD556DA00B363D4 /* GeniTagTests.m */; };
-		B702AD601BD558E800B363D4 /* EPCEncoder.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B702AD5F1BD558E800B363D4 /* EPCEncoder.framework */; };
+		B7CF433A1BFCF2D4000AAC41 /* EPCEncoder.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B7CF43351BFCF271000AAC41 /* EPCEncoder.framework */; };
+		B7CF433B1BFCF2D4000AAC41 /* EPCEncoder.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = B7CF43351BFCF271000AAC41 /* EPCEncoder.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -25,6 +26,20 @@
 			remoteInfo = GeniTag;
 		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		B7CF433C1BFCF2D4000AAC41 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				B7CF433B1BFCF2D4000AAC41 /* EPCEncoder.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		B702AD381BD556DA00B363D4 /* GeniTag.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GeniTag.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -39,7 +54,7 @@
 		B702AD4E1BD556DA00B363D4 /* GeniTagTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GeniTagTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		B702AD531BD556DA00B363D4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B702AD541BD556DA00B363D4 /* GeniTagTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GeniTagTests.m; sourceTree = "<group>"; };
-		B702AD5F1BD558E800B363D4 /* EPCEncoder.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = EPCEncoder.framework; sourceTree = "<group>"; };
+		B7CF43351BFCF271000AAC41 /* EPCEncoder.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = EPCEncoder.framework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -47,7 +62,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B702AD601BD558E800B363D4 /* EPCEncoder.framework in Frameworks */,
+				B7CF433A1BFCF2D4000AAC41 /* EPCEncoder.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -123,7 +138,7 @@
 		B702AD5E1BD558A000B363D4 /* EPCEncoder */ = {
 			isa = PBXGroup;
 			children = (
-				B702AD5F1BD558E800B363D4 /* EPCEncoder.framework */,
+				B7CF43351BFCF271000AAC41 /* EPCEncoder.framework */,
 			);
 			name = EPCEncoder;
 			sourceTree = "<group>";
@@ -138,6 +153,7 @@
 				B702AD341BD556DA00B363D4 /* Sources */,
 				B702AD351BD556DA00B363D4 /* Frameworks */,
 				B702AD361BD556DA00B363D4 /* Resources */,
+				B7CF433C1BFCF2D4000AAC41 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -172,7 +188,7 @@
 		B702AD301BD556DA00B363D4 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0630;
+				LastUpgradeCheck = 0710;
 				ORGANIZATIONNAME = Tim.Milne;
 				TargetAttributes = {
 					B702AD371BD556DA00B363D4 = {
@@ -284,6 +300,7 @@
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -353,6 +370,7 @@
 				);
 				INFOPLIST_FILE = GeniTag/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.target.playground.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -368,6 +386,7 @@
 				);
 				INFOPLIST_FILE = GeniTag/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.target.playground.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
@@ -387,6 +406,7 @@
 				);
 				INFOPLIST_FILE = GeniTagTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.target.playground.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/GeniTag.app/Contents/MacOS/GeniTag";
 			};
@@ -403,6 +423,7 @@
 				);
 				INFOPLIST_FILE = GeniTagTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.target.playground.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/GeniTag.app/Contents/MacOS/GeniTag";
 			};
