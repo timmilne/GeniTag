@@ -11,6 +11,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "Converter.h"  // Convert
 
 // Global values
 static NSString *SGTIN_URI_Prefix = @"urn:epc:tag:sgtin-96:1.";
