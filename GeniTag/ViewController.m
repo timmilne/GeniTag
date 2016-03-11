@@ -113,7 +113,7 @@
                 // Start with the barcode
                 stringForOutputFile = [stringForOutputFile stringByAppendingString:barcode];
                 
-                for (int i=0; i<=_numEach; i++){
+                for (int i=0; i<_numEach; i++){
                     NSString *ser = [NSString stringWithFormat:@"%d", (_startSer+i)];
                     
                     [_encode withDpt:dpt cls:cls itm:itm ser:ser];
