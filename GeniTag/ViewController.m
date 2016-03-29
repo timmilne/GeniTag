@@ -118,9 +118,27 @@
                 NSString *barcode = line;
                 NSMutableString *hex;
                 
-                // Quick length checks, chop to 12 for now (remove leading zeros)
-                if (barcode.length == 13) barcode = [barcode substringFromIndex:1];
-                if (barcode.length == 14) barcode = [barcode substringFromIndex:2];
+                // Chop 13 and 14 digit barcodes to 12, if leading zeroes
+                if (barcode.length == 13) {
+                    if ([[barcode substringToIndex:1] isEqualToString:@"0"]) {
+                        barcode = [barcode substringFromIndex:1];
+                    }
+                    else {
+                        [self writeToErrorFile:barcode];
+                        NSLog( @"Unsupported Barcode: %@\n", barcode);
+                        continue;
+                    }
+                }
+                if (barcode.length == 14) {
+                    if ([[barcode substringToIndex:2] isEqualToString:@"00"]) {
+                        barcode = [barcode substringFromIndex:2];
+                    }
+                    else {
+                        [self writeToErrorFile:barcode];
+                        NSLog( @"Unsupported Barcode: %@\n", barcode);
+                        continue;
+                    }
+                }
                 
                 // Owned brand, encode DPCI in a GID
                 if (barcode.length == 12 && [[barcode substringToIndex:2] isEqualToString:@"49"]) {
