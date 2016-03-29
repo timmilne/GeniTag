@@ -14,6 +14,10 @@
     NSURL          *_inputFileURL;
     NSURL          *_outputFileURL;
     NSOutputStream *_outputStream;
+    NSURL          *_outputFilePGURL;
+    NSOutputStream *_outputStreamPG;
+    NSURL          *_outputFileErrorURL;
+    NSOutputStream *_outputStreamError;
     int             _startSer;
     int             _numEach;
     EPCEncoder     *_encode;
@@ -82,6 +86,14 @@
     _outputFileURL = [[_inputFileURL URLByDeletingLastPathComponent] URLByAppendingPathComponent:fileName];
     _outputStream = [[NSOutputStream alloc] initWithURL:_outputFileURL append:YES];
     [_outputStream open];
+    NSString *fileNamePG = [NSString stringWithFormat:@"GeniTagOutputPG_%d-%d.csv", _startSer, (_startSer+_numEach-1)];
+    _outputFilePGURL = [[_inputFileURL URLByDeletingLastPathComponent] URLByAppendingPathComponent:fileNamePG];
+    _outputStreamPG = [[NSOutputStream alloc] initWithURL:_outputFilePGURL append:YES];
+    [_outputStreamPG open];
+    NSString *fileNameError = [NSString stringWithFormat:@"GeniTagError_%d-%d.csv", _startSer, (_startSer+_numEach-1)];
+    _outputFileErrorURL = [[_inputFileURL URLByDeletingLastPathComponent] URLByAppendingPathComponent:fileNameError];
+    _outputStreamError = [[NSOutputStream alloc] initWithURL:_outputFileErrorURL append:YES];
+    [_outputStreamError open];
     
     [_successImg setHidden:TRUE];
     [_failImg setHidden:TRUE];
@@ -126,11 +138,13 @@
                     
                     // Collect the encoded barcodes
                     stringForOutputFile = [stringForOutputFile stringByAppendingFormat:@",%@", hex];
+                    [self writeToOutputFilePG:hex barcode:barcode];
                     NSLog( @"\nBarcode: %@\nEncoded GID (hex): %@\n", barcode, hex);
                     
                     // Now cycle through the rest
                     for (int i=1; i<_numEach; i++){
                         stringForOutputFile = [stringForOutputFile stringByAppendingFormat:@",%@", [self HexIncrement:hex]];
+                        [self writeToOutputFilePG:hex barcode:barcode];
                         NSLog( @"\nBarcode: %@\nEncoded GID (hex): %@\n", barcode, hex);
                     }
                 }
@@ -150,17 +164,20 @@
                     
                     // Collect the encoded barcodes
                     stringForOutputFile = [stringForOutputFile stringByAppendingFormat:@",%@", hex];
+                    [self writeToOutputFilePG:hex barcode:barcode];
                     NSLog( @"\nBarcode: %@\nEncoded SGTIN (hex): %@\n", barcode, hex);
                     
                     // Now cycle through the rest
-                    for (int i=0; i<=_numEach; i++){
+                    for (int i=1; i<_numEach; i++){
                         stringForOutputFile = [stringForOutputFile stringByAppendingFormat:@",%@", [self HexIncrement:hex]];
+                        [self writeToOutputFilePG:hex barcode:barcode];
                         NSLog( @"\nBarcode: %@\nEncoded SGTIN (hex): %@\n", barcode, hex);
                     }
                 }
                 
                 // Unsupported barcode
                 else {
+                    [self writeToErrorFile:barcode];
                     NSLog( @"Unsupported Barcode: %@\n", barcode);
                     continue;
                 }
@@ -172,6 +189,8 @@
         }
     }
     [_outputStream close];
+    [_outputStreamPG close];
+    [_outputStreamError close];
     
     if (error == nil) {
         [_statusFld setStringValue:@"Success"];
@@ -236,6 +255,20 @@
     content = [content stringByAppendingString:@"\r\n"];
     NSData *strData = [content dataUsingEncoding:NSUTF8StringEncoding];
     [_outputStream write:(uint8_t *)[strData bytes] maxLength:[strData length]];
+}
+
+-(void) writeToOutputFilePG:(NSString*)hex barcode:(NSString*)barcode{
+    // Carriage return for next record (the file is all one line)
+    NSString *content = [NSString stringWithFormat:@"%@, %@\r\n", hex, barcode];
+    NSData *strData = [content dataUsingEncoding:NSUTF8StringEncoding];
+    [_outputStreamPG write:(uint8_t *)[strData bytes] maxLength:[strData length]];
+}
+
+-(void) writeToErrorFile:(NSString*)barcode{
+    // Carriage return for next record (the file is all one line)
+    NSString *content = [NSString stringWithFormat:@"%@\r\n", barcode];
+    NSData *strData = [content dataUsingEncoding:NSUTF8StringEncoding];
+    [_outputStreamError write:(uint8_t *)[strData bytes] maxLength:[strData length]];
 }
 
 @end
