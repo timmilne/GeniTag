@@ -259,7 +259,7 @@
 
 -(void) writeToOutputFilePG:(NSString*)hex barcode:(NSString*)barcode{
     // Carriage return for next record (the file is all one line)
-    NSString *content = [NSString stringWithFormat:@"%@, %@\r\n", hex, barcode];
+    NSString *content = [NSString stringWithFormat:@"%@,%@\r\n", hex, barcode];
     NSData *strData = [content dataUsingEncoding:NSUTF8StringEncoding];
     [_outputStreamPG write:(uint8_t *)[strData bytes] maxLength:[strData length]];
 }
